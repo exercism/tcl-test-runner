@@ -8,9 +8,9 @@ RUN apt-get update && \
 RUN apt-get install -y tcl-thread
 
 # Cleanup
-RUN rm -rf /var/lib/apt/lists/* && \
-    apt-get purge --auto-remove && \
-    apt-get clean
+RUN apt-get purge --auto-remove && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY . /opt/test-runner
 WORKDIR /opt/test-runner
