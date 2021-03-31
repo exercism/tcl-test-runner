@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "status": "fail",
+  "output": "invalid command name \"PROCCIEE\"\n    while executing\n\"PROCCIEE isLeapYear {year} @#$&\"\n    (file \"example-syntax-error.tcl\" line 3)\n    invoked from within\n\"source \"example-syntax-error.tcl\"\"\n    (file \"example-syntax-error.test\" line 4)"
+}

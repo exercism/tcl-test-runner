@@ -48,8 +48,7 @@ if [ $exit_code -eq 0 ]; then
 else
     # Manually add colors to the output to help scanning the output for errors
     colorized_test_output=$(echo "$test_output" \
-         | GREP_COLOR='01;31' grep --color=always -E -e '^(ERROR:.*|.*failed)$|$' \
-         | GREP_COLOR='01;32' grep --color=always -E -e '^.*passed$|$')
+         | GREP_COLOR='01;31' grep --color=always -E -e '^.*FAILED$|$')
 
     jq -n --arg output "${colorized_test_output}" '{version: 1, status: "fail", output: $output}' > ${results_file}
 fi

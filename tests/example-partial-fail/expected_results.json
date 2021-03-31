@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "status": "fail",
+  "output": "\n\n\u001b[01;31m\u001b[K==== leap-7 year divisible by 400 in leap year FAILED\u001b[m\u001b[K\n==== Contents of test case:\n\n            isLeapYear 2000\n        \n---- Result was:\n0\n---- Result should have been (exact matching):\n1\n\u001b[01;31m\u001b[K==== leap-7 FAILED\u001b[m\u001b[K\n\nexample-partial-fail.test:\tTotal\t9\tPassed\t6\tSkipped\t2\tFailed\t1"
+}

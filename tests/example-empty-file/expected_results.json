@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "status": "fail",
+  "output": "\n\n\u001b[01;31m\u001b[K==== leap-1 year not divisible by 4 in common year FAILED\u001b[m\u001b[K\n==== Contents of test case:\n\n            isLeapYear 2015\n        \n---- Test generated error; Return code was: 1\n---- Return code should have been one of: 0 2\n---- errorInfo: invalid command name \"isLeapYear\"\n    while executing\n\"isLeapYear 2015\"\n    (\"uplevel\" body line 2)\n    invoked from within\n\"uplevel 1 $script\"\n---- errorCode: TCL LOOKUP COMMAND isLeapYear\n\u001b[01;31m\u001b[K==== leap-1 FAILED\u001b[m\u001b[K\n\nexample-empty-file.test:\tTotal\t9\tPassed\t0\tSkipped\t8\tFailed\t1"
+}
