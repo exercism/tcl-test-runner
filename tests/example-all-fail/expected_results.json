@@ -1,5 +1,5 @@
 {
   "version": 1,
   "status": "fail",
-  "output": "\n\n\u001b[01;31m\u001b[K==== leap-1 year not divisible by 4 in common year FAILED\u001b[m\u001b[K\n==== Contents of test case:\n\n            isLeapYear 2015\n        \n---- Result was:\n1\n---- Result should have been (exact matching):\n0\n\u001b[01;31m\u001b[K==== leap-1 FAILED\u001b[m\u001b[K\n\nexample-all-fail.test:\tTotal\t2\tPassed\t0\tSkipped\t1\tFailed\t1"
+  "message": "\n\n\u001b[01;31m\u001b[K==== leap-1 year not divisible by 4 in common year FAILED\u001b[m\u001b[K\n==== Contents of test case:\n\n            isLeapYear 2015\n        \n---- Result was:\n1\n---- Result should have been (exact matching):\n0\n\u001b[01;31m\u001b[K==== leap-1 FAILED\u001b[m\u001b[K\n\nexample-all-fail.test:\tTotal\t2\tPassed\t0\tSkipped\t1\tFailed\t1"
 }
