@@ -1,46 +1,17 @@
 #!/usr/bin/env tclsh
 package require tcltest
 namespace import ::tcltest::*
+source ../testHelpers.tcl
+
 source "example-all-fail.tcl"
 
-proc fail_fast {} {
-    return [expr {
-        ![info exists ::env(RUN_ALL)]
-        || [string is boolean -strict $::env(RUN_ALL)]
-        && !$::env(RUN_ALL)
-    }]
-}
+test leap-1 "year not divisible by 4 in common year" -body {
+    isLeapYear 2015
+} -returnCodes ok -match boolean -result false
 
-proc failed {} {
-    return [expr {$::tcltest::numTests(Failed) > 0}]
-}
+skip leap-3
+test leap-3 "year divisible by 4, not divisible by 100 in leap year" -body {
+    isLeapYear 1996
+} -returnCodes ok -match boolean -result true
 
-if {[fail_fast]} {
-    proc test args {
-        if {[failed]} {::tcltest::configure -skip *}
-        uplevel [list ::tcltest::test {*}$args]
-    }
-}
-
-proc cleanupTests {} {
-    set failed [failed]
-    uplevel 1 ::tcltest::cleanupTests
-    if {$failed} {exit 1}
-}
-
-if {$::argv0 eq [info script]} {
-
-    set cases {
-        {leap-1 2015 0 "year not divisible by 4 in common year"}
-        {leap-3 1996 1 "year divisible by 4, not divisible by 100 in leap year"}
-    }
-
-    foreach case $cases {
-        lassign $case name year result description
-        test $name $description -body "
-            isLeapYear $year
-        " -result $result
-    }
-
-    cleanupTests
-}
+cleanupTests
