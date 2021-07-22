@@ -8,4 +8,5 @@ RUN apt-get update && \
 
 COPY . /opt/test-runner
 WORKDIR /opt/test-runner
+ENV RUN_ALL=true
 ENTRYPOINT ["/opt/test-runner/bin/run.sh"]
