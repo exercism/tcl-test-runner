@@ -1,4 +1,70 @@
 {
-  "version": 1,
-  "status": "pass"
+    "version": 2,
+    "status":  "pass",
+    "message": null,
+    "tests":   [
+        {
+            "name":      "leap-1",
+            "status":    "pass",
+            "output":    null,
+            "message":   null,
+            "test_code": "\n    isLeapYear 2015\n"
+        },
+        {
+            "name":      "leap-2",
+            "status":    "pass",
+            "output":    null,
+            "message":   null,
+            "test_code": "\n    isLeapYear 1970\n"
+        },
+        {
+            "name":      "leap-3",
+            "status":    "pass",
+            "output":    null,
+            "message":   null,
+            "test_code": "\n    isLeapYear 1996\n"
+        },
+        {
+            "name":      "leap-4",
+            "status":    "pass",
+            "output":    null,
+            "message":   null,
+            "test_code": "\n    isLeapYear 1960\n"
+        },
+        {
+            "name":      "leap-5",
+            "status":    "pass",
+            "output":    null,
+            "message":   null,
+            "test_code": "\n    isLeapYear 2100\n"
+        },
+        {
+            "name":      "leap-6",
+            "status":    "pass",
+            "output":    null,
+            "message":   null,
+            "test_code": "\n    isLeapYear 1900\n"
+        },
+        {
+            "name":      "leap-7",
+            "status":    "pass",
+            "output":    null,
+            "message":   null,
+            "test_code": "\n    isLeapYear 2000\n"
+        },
+        {
+            "name":      "leap-8",
+            "status":    "pass",
+            "output":    null,
+            "message":   null,
+            "test_code": "\n    isLeapYear 2400\n"
+        },
+        {
+            "name":      "leap-9",
+            "status":    "pass",
+            "output":    null,
+            "message":   null,
+            "test_code": "\n    isLeapYear 1800\n"
+        }
+    ]
 }

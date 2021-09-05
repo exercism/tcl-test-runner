@@ -1,5 +1,21 @@
 {
-  "version": 1,
-  "status": "fail",
-  "message": "\n\n\u001b[01;31m\u001b[K==== leap-1 year not divisible by 4 in common year FAILED\u001b[m\u001b[K\n==== Contents of test case:\n\n    isLeapYear 2015\n\n---- Result was:\n1\n---- Result should have been (boolean matching):\nfalse\n\u001b[01;31m\u001b[K==== leap-1 FAILED\u001b[m\u001b[K\n\n\n\n\u001b[01;31m\u001b[K==== leap-3 year divisible by 4, not divisible by 100 in leap year FAILED\u001b[m\u001b[K\n==== Contents of test case:\n\n    isLeapYear 1996\n\n---- Result was:\n0\n---- Result should have been (boolean matching):\ntrue\n\u001b[01;31m\u001b[K==== leap-3 FAILED\u001b[m\u001b[K\n\nexample-all-fail.test:\tTotal\t2\tPassed\t0\tSkipped\t0\tFailed\t2"
+    "version": 2,
+    "status":  "fail",
+    "message": null,
+    "tests":   [
+        {
+            "name":      "leap-1",
+            "status":    "fail",
+            "message":   "==== leap-1 year not divisible by 4 in common year FAILED\n==== Contents of test case:\n\n    isLeapYear 2015\n\n---- Result was:\n1\n---- Result should have been (boolean matching):\nfalse\n==== leap-1 FAILED",
+            "output":    null,
+            "test_code": "\n    isLeapYear 2015\n"
+        },
+        {
+            "name":      "leap-3",
+            "status":    "fail",
+            "message":   "==== leap-3 year divisible by 4, not divisible by 100 in leap year FAILED\n==== Contents of test case:\n\n    isLeapYear 1996\n\n---- Result was:\n0\n---- Result should have been (boolean matching):\ntrue\n==== leap-3 FAILED",
+            "output":    null,
+            "test_code": "\n    isLeapYear 1996\n"
+        }
+    ]
 }

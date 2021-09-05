@@ -13,6 +13,8 @@
 
 exit_code=0
 
+export RUN_ALL=yes
+
 # Iterate over all test directories
 for test_dir in tests/*; do
     test_dir_name="$(basename $test_dir)"
@@ -23,7 +25,9 @@ for test_dir in tests/*; do
     expected_results_file_path="${test_dir}/expected_results.json"    
 
     if [ "${test_dir_name}" != "output" ] && [ -f "${expected_results_file_path}" ]; then
-        bin/run.sh "${test_dir_name}" "${test_dir}" "${test_dir}"
+        echo "===="
+        bin/run.tcl "${test_dir_name}" "${test_dir}" "${test_dir}"
+        echo "===="
 
         echo "${test_dir_name}: comparing ${results_file} to ${expected_results_file}"
         diff "${results_file_path}" "${expected_results_file_path}"
