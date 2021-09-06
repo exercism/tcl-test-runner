@@ -28,79 +28,35 @@ proc usage {} {
     exit 1
 }
 
-proc jsonResult {status {tests {}} {message ""}} {
-    set j [json object]
-    json set j version [json number $::SPEC_VERSION]
-    json set j status  [json string $status]
-    if {$message eq ""} {
-        json set j message null
-    } else {
-        json set j message [json string $message]
-    }
-    if {[llength $tests] == 0} {
-        json set j tests null
-    } else {
-        set count {pass 0 fail 0 error 0}
-        set testAsJson [json array {*}[lmap tst $tests {
-            dict incr count [dict get $tst status]
-            set jt [test2json $tst]
-            list json $jt
-        }]]
-        puts "Ran [llength $tests] tests: $count"
-        json set j tests $testAsJson
-    }
-    return [json pretty $j]
-}
-
-proc test2json {tst} {
-    set j [json object]
-    dict for {key val} $tst {
-        if {$val eq ""} {
-            json set j $key null
-        } else {
-            json set j $key [json string $val]
-        }
-    }
-    return $j
-}
-
 ############################################################
 proc runTestFile {slug testsFile inputDir outputFile} {
     puts "Running tests..."
-    set cwd [pwd]
-
-    cd $inputDir
-
-    # inject extra verbosity into test script
-    set fhIn [open $testsFile r]
-    set fhOut [open $testsFile.verbose w]
-    while {[gets $fhIn line] != -1} {
-        puts $fhOut $line
-        if {[regexp "source .*$slug\.tcl" $line]} {
-            puts $fhOut "configure -verbose {start body error pass}"
-        }
-    }
-    close $fhIn
-    close $fhOut
 
     # Run the tests for the provided implementation file and redirect stdout and
     # stderr to capture it
     set ::env(RUN_ALL) true
-    set status [catch {exec tclsh $testsFile.verbose 2>@1} testOutput]
-    set exitCode 0
-    if {$status != 0} {
-        switch -exact -- [lindex $::errorCode 0] {
-            NONE {
-                # got some stderr which is in $testOutput
-            }
-            CHILDSTATUS {
-                set exitCode [lindex $::errorCode 2]
-            }
-        }
+
+    set cwd [pwd]
+    cd $inputDir
+
+    set verboseTestsFile [extraTestVerbosity $slug $testsFile]
+
+    try {
+        set exitCode 0
+        set testOutput [exec tclsh $verboseTestsFile 2>@1]
+    } trap CHILDSTATUS {errMsg errData} {
+        # exec'ed program exited non-zero
+        set exitCode [lindex [dict get $errData -errorcode] end]
+        set testOutput $errMsg
+    } on error {errMsg errData} {
+        # catch any other type of error
+        set exitCode -1
+        set testOutput $errMsg
+    } finally {
+        cd $cwd
     }
 
-    cd $cwd
-
+    # only written for debugging the test runner, otherwise not used
     set fh [open $outputFile w]
     puts $fh $testOutput
     close $fh
@@ -110,8 +66,24 @@ proc runTestFile {slug testsFile inputDir outputFile} {
     return [list $exitCode $testOutput]
 }
 
-proc parseOutput {testOutput} {
-    # parse test output
+# inject extra verbosity into test script
+proc extraTestVerbosity {slug testsFile} {
+    set verboseTestsFile "$testsFile.verbose"
+    set fhIn [open $testsFile r]
+    set fhOut [open $verboseTestsFile w]
+    while {[gets $fhIn line] != -1} {
+        puts $fhOut $line
+        if {[regexp "source .*$slug\.tcl" $line]} {
+            puts $fhOut "configure -verbose {start body error pass}"
+        }
+    }
+    close $fhIn
+    close $fhOut
+    return $verboseTestsFile
+}
+
+############################################################
+proc parseTestOutput {testOutput} {
     set tests {}
     set state None
 
@@ -155,29 +127,66 @@ proc parseOutput {testOutput} {
 ############################################################
 # This will set up a "safe interpreter" where we will override
 # some of the test commands and execute the test file
-proc getTestCodes {testsFile} {
+proc getTestBodies {testsFile} {
     set i [interp create -safe]
-    interp share {} stdout $i
     $i expose source source
-    $i eval [list set testsFile $testsFile]
-    try {
-        $i eval {
-            rename source tcl_source
-            foreach cmd {package namespace source skip cleanupTests} {
-                # turn these into no-op commands
-                proc $cmd {args} {}
-            }
-            proc test {name desc args} {
-                dict set ::testCode $name [dict get $args -body]
-            }
-            set ::testCode {}
-            tcl_source $::testsFile
+    $i eval {
+        rename source tcl_source
+        foreach cmd {package namespace source skip cleanupTests} {
+            # turn these into no-op commands
+            proc $cmd {args} {}
         }
+        # don't actually run the test,
+        # just map the test name to the test body
+        proc test {name desc args} {
+            dict set ::testCode $name [dict get $args -body]
+        }
+        set ::testCode {}
+    }
+    try {
+        $i eval [list tcl_source $testsFile]
         set result [$i eval {set ::testCode}]
     } on error {} {
         set result {}
     }
     return $result
+}
+
+############################################################
+# Compose the JSON result.
+proc jsonResult {status {tests {}} {message ""}} {
+    set j [json object]
+    json set j version [json number $::SPEC_VERSION]
+    json set j status  [json string $status]
+    if {$message eq ""} {
+        json set j message null
+    } else {
+        json set j message [json string $message]
+    }
+    if {[llength $tests] == 0} {
+        json set j tests null
+    } else {
+        set count {pass 0 fail 0 error 0}
+        set testsAsJson [json array {*}[lmap tst $tests {
+            dict incr count [dict get $tst status]
+            list json [jsonTestResult $tst]
+        }]]
+        puts "Ran [llength $tests] tests: $count"
+        json set j tests $testsAsJson
+    }
+    return [json pretty $j]
+}
+
+proc jsonTestResult {tst} {
+    set j [json object]
+    dict for {key val} $tst {
+        if {$val eq ""} {
+            json set j $key null
+        } else {
+            json set j $key [json string $val]
+        }
+    }
+    return $j
 }
 
 ############################################################
@@ -203,14 +212,14 @@ proc main {argv} {
     file mkdir $output_dir
 
     lassign [runTestFile $slug $testsFile $inputDir $outputFile] exitCode testOutput
-    set tests [parseOutput $testOutput]
+    set tests [parseTestOutput $testOutput]
 
     # add the test code to the results
-    set testCodes [getTestCodes [file join $inputDir $testsFile]]
+    set testBodies [getTestBodies [file join $inputDir $testsFile]]
     set tests [lmap tst $tests {
         set tstname [dict get $tst name]
-        if {[dict exists $testCodes $tstname]} {
-            dict set tst test_code [dict get $testCodes $tstname]
+        if {[dict exists $testBodies $tstname]} {
+            dict set tst test_code [dict get $testBodies $tstname]
         }
         set tst
     }]
@@ -220,10 +229,10 @@ proc main {argv} {
     set fh [open $results_file w]
     if {$exitCode == 0} {
         puts $fh [jsonResult pass $tests ""]
-    } elseif {[llength $tests] == 0} {
-        puts $fh [jsonResult error "" $testOutput]
-    } else {
+    } elseif {[llength $tests] > 0} {
         puts $fh [jsonResult fail $tests ""]
+    } else {
+        puts $fh [jsonResult error "" $testOutput]
     }
     close $fh
 
