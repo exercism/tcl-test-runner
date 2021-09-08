@@ -8,14 +8,14 @@
             "status":    "fail",
             "message":   "==== leap-1 year not divisible by 4 in common year FAILED\n==== Contents of test case:\n\n    isLeapYear 2015\n\n---- Test generated error; Return code was: 1\n---- Return code should have been one of: 0\n---- errorInfo: invalid command name \"isLeapYear\"\n    while executing\n\"isLeapYear 2015\"\n    (\"uplevel\" body line 2)\n    invoked from within\n\"uplevel 1 $script\"\n---- errorCode: TCL LOOKUP COMMAND isLeapYear\n==== leap-1 FAILED",
             "output":    null,
-            "test_code": "\n    isLeapYear 2015\n"
+            "test_code": "isLeapYear 2015"
         },
         {
             "name":      "leap-3",
             "status":    "fail",
             "message":   "==== leap-3 year divisible by 4, not divisible by 100 in leap year FAILED\n==== Contents of test case:\n\n    isLeapYear 1996\n\n---- Test generated error; Return code was: 1\n---- Return code should have been one of: 0\n---- errorInfo: invalid command name \"isLeapYear\"\n    while executing\n\"isLeapYear 1996\"\n    (\"uplevel\" body line 2)\n    invoked from within\n\"uplevel 1 $script\"\n---- errorCode: TCL LOOKUP COMMAND isLeapYear\n==== leap-3 FAILED",
             "output":    null,
-            "test_code": "\n    isLeapYear 1996\n"
+            "test_code": "isLeapYear 1996"
         }
     ]
 }

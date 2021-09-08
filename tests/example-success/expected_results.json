@@ -8,63 +8,63 @@
             "status":    "pass",
             "output":    null,
             "message":   null,
-            "test_code": "\n    isLeapYear 2015\n"
+            "test_code": "isLeapYear 2015"
         },
         {
             "name":      "leap-2",
             "status":    "pass",
             "output":    null,
             "message":   null,
-            "test_code": "\n    isLeapYear 1970\n"
+            "test_code": "isLeapYear 1970"
         },
         {
             "name":      "leap-3",
             "status":    "pass",
             "output":    null,
             "message":   null,
-            "test_code": "\n    isLeapYear 1996\n"
+            "test_code": "isLeapYear 1996"
         },
         {
             "name":      "leap-4",
             "status":    "pass",
             "output":    null,
             "message":   null,
-            "test_code": "\n    isLeapYear 1960\n"
+            "test_code": "isLeapYear 1960"
         },
         {
             "name":      "leap-5",
             "status":    "pass",
             "output":    null,
             "message":   null,
-            "test_code": "\n    isLeapYear 2100\n"
+            "test_code": "isLeapYear 2100"
         },
         {
             "name":      "leap-6",
             "status":    "pass",
             "output":    null,
             "message":   null,
-            "test_code": "\n    isLeapYear 1900\n"
+            "test_code": "isLeapYear 1900"
         },
         {
             "name":      "leap-7",
             "status":    "pass",
             "output":    null,
             "message":   null,
-            "test_code": "\n    isLeapYear 2000\n"
+            "test_code": "isLeapYear 2000"
         },
         {
             "name":      "leap-8",
             "status":    "pass",
             "output":    null,
             "message":   null,
-            "test_code": "\n    isLeapYear 2400\n"
+            "test_code": "isLeapYear 2400"
         },
         {
             "name":      "leap-9",
             "status":    "pass",
             "output":    null,
             "message":   null,
-            "test_code": "\n    isLeapYear 1800\n"
+            "test_code": "isLeapYear 1800"
         }
     ]
 }

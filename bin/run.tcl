@@ -29,12 +29,10 @@ proc usage {} {
 }
 
 ############################################################
+# Run the tests for the provided implementation file and redirect stdout and
+# stderr to capture it
 proc runTestFile {slug testsFile inputDir outputFile} {
     puts "Running tests..."
-
-    # Run the tests for the provided implementation file and redirect stdout and
-    # stderr to capture it
-    set ::env(RUN_ALL) true
 
     set cwd [pwd]
     cd $inputDir
@@ -132,14 +130,14 @@ proc getTestBodies {testsFile} {
     $i expose source source
     $i eval {
         rename source tcl_source
+        # turn these into no-op commands
         foreach cmd {package namespace source skip cleanupTests} {
-            # turn these into no-op commands
             proc $cmd {args} {}
         }
         # don't actually run the test,
         # just map the test name to the test body
         proc test {name desc args} {
-            dict set ::testCode $name [dict get $args -body]
+            dict set ::testCode $name [string trim [dict get $args -body]]
         }
         set ::testCode {}
     }

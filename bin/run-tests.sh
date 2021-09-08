@@ -24,15 +24,16 @@ for test_dir in tests/*; do
     expected_results_file="expected_results.json"
     expected_results_file_path="${test_dir}/expected_results.json"    
 
-    if [ "${test_dir_name}" != "output" ] && [ -f "${expected_results_file_path}" ]; then
+    if [ -f "${expected_results_file_path}" ]; then
         echo "===="
         bin/run.tcl "${test_dir_name}" "${test_dir}" "${test_dir}"
         echo "===="
 
         echo "${test_dir_name}: comparing ${results_file} to ${expected_results_file}"
-        diff "${results_file_path}" "${expected_results_file_path}"
-
-        if [ $? -ne 0 ]; then
+        if diff "${results_file_path}" "${expected_results_file_path}"; then
+            # exit status zero: no diff
+            echo OK
+        else
             exit_code=1
         fi
     fi
