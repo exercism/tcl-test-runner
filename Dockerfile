@@ -1,12 +1,8 @@
-FROM ubuntu:20.04
-
-RUN apt-get update && \
-    apt-get install -y jq tcl-thread && \
-    apt-get purge --auto-remove && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# This image includes the 3rd party rl_json library:
+#   https://github.com/RubyLane/rl_json
+FROM cyanogilvie/tcl
 
 COPY . /opt/test-runner
 WORKDIR /opt/test-runner
 ENV RUN_ALL=true
-ENTRYPOINT ["/opt/test-runner/bin/run.sh"]
+ENTRYPOINT ["/opt/test-runner/bin/run.tcl"]

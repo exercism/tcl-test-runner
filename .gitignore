@@ -1,1 +1,7 @@
-tests/**/results.json
+results.json
+results.out
+*.test.verbose
+
+# vim
+.*.sw?
+.sw?

@@ -1,5 +1,70 @@
 {
-  "version": 1,
-  "status": "fail",
-  "message": "\n\n\u001b[01;31m\u001b[K==== leap-7 year divisible by 400 in leap year FAILED\u001b[m\u001b[K\n==== Contents of test case:\n\n    isLeapYear 2000\n\n---- Result was:\n0\n---- Result should have been (boolean matching):\ntrue\n\u001b[01;31m\u001b[K==== leap-7 FAILED\u001b[m\u001b[K\n\n\n\n\u001b[01;31m\u001b[K==== leap-8 year divisible by 400 but not by 125 is still a leap year FAILED\u001b[m\u001b[K\n==== Contents of test case:\n\n    isLeapYear 2400\n\n---- Result was:\n0\n---- Result should have been (boolean matching):\ntrue\n\u001b[01;31m\u001b[K==== leap-8 FAILED\u001b[m\u001b[K\n\nexample-partial-fail.test:\tTotal\t9\tPassed\t7\tSkipped\t0\tFailed\t2"
+    "version": 2,
+    "status":  "fail",
+    "message": null,
+    "tests":   [
+        {
+            "name":      "leap-1",
+            "status":    "pass",
+            "output":    null,
+            "message":   null,
+            "test_code": "isLeapYear 2015"
+        },
+        {
+            "name":      "leap-2",
+            "status":    "pass",
+            "output":    null,
+            "message":   null,
+            "test_code": "isLeapYear 1970"
+        },
+        {
+            "name":      "leap-3",
+            "status":    "pass",
+            "output":    null,
+            "message":   null,
+            "test_code": "isLeapYear 1996"
+        },
+        {
+            "name":      "leap-4",
+            "status":    "pass",
+            "output":    null,
+            "message":   null,
+            "test_code": "isLeapYear 1960"
+        },
+        {
+            "name":      "leap-5",
+            "status":    "pass",
+            "output":    null,
+            "message":   null,
+            "test_code": "isLeapYear 2100"
+        },
+        {
+            "name":      "leap-6",
+            "status":    "pass",
+            "output":    null,
+            "message":   null,
+            "test_code": "isLeapYear 1900"
+        },
+        {
+            "name":      "leap-7",
+            "status":    "fail",
+            "message":   "==== leap-7 year divisible by 400 in leap year FAILED\n==== Contents of test case:\n\n    isLeapYear 2000\n\n---- Result was:\n0\n---- Result should have been (boolean matching):\ntrue\n==== leap-7 FAILED",
+            "output":    null,
+            "test_code": "isLeapYear 2000"
+        },
+        {
+            "name":      "leap-8",
+            "status":    "fail",
+            "message":   "==== leap-8 year divisible by 400 but not by 125 is still a leap year FAILED\n==== Contents of test case:\n\n    isLeapYear 2400\n\n---- Result was:\n0\n---- Result should have been (boolean matching):\ntrue\n==== leap-8 FAILED",
+            "output":    null,
+            "test_code": "isLeapYear 2400"
+        },
+        {
+            "name":      "leap-9",
+            "status":    "pass",
+            "output":    null,
+            "message":   null,
+            "test_code": "isLeapYear 1800"
+        }
+    ]
 }
