@@ -71,7 +71,7 @@ proc extraTestVerbosity {slug testsFile} {
     set fhOut [open $verboseTestsFile w]
     while {[gets $fhIn line] != -1} {
         puts $fhOut $line
-        if {[regexp "source .*$slug\.tcl" $line]} {
+        if {[string match "namespace import *tcltest*" $line]} {
             puts $fhOut "configure -verbose {start body error pass}"
         }
     }
