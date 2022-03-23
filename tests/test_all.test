@@ -1,0 +1,29 @@
+#!/usr/bin/env tclsh
+package require tcltest
+namespace import ::tcltest::*
+set PWD [pwd] ;# expected to be in the repo root dir
+
+source [file join $PWD tests testHelpers.tcl]
+
+set RUN_SCRIPT [file join $PWD bin run.tcl]
+set env(RUN_ALL) yes
+
+set test_dirs [glob -directory [file join $PWD tests] -types d *]
+
+foreach dir $test_dirs {
+    set slug [file tail $dir]
+    test $slug $slug -body {
+        set actual [file join $dir results.json]
+        file delete $actual
+
+        set out [exec $RUN_SCRIPT $slug $dir $dir]
+
+        if {![file exists $actual]} {
+            return -code error "no results.json file for $dir"
+        } else {
+            string cat $actual
+        }
+    } -returnCodes ok -match exercismResultFiles -result [file join $dir expected_results.json]
+}
+
+cleanupTests
