@@ -56,7 +56,10 @@ proc exercismResultFilesMatch {expected_file actual_file} {
     expr {
         [json get $actual version] == [json get $expected version] &&
         [json get $actual status] eq [json get $expected status] &&
-        [json get $actual tests] eq [json get $expected tests]
+        [json get $actual tests] eq [json get $expected tests] &&
+        [json exists $actual "test-environment"] &&
+        [json exists $actual "test-environment" tclsh] &&
+        [string length [json get $actual test-environment tclsh]] > 0
     }
 }
 customMatch exercismResultFiles exercismResultFilesMatch
