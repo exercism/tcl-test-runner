@@ -11,4 +11,4 @@
 # Example:
 # ./bin/run-tests.sh
 
-tclsh tests/test_all.test
+RUN_ALL=true tclsh tests/test_all.test
