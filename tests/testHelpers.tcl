@@ -1,3 +1,6 @@
+package require rl_json
+namespace import ::rl_json::json
+
 #############################################################
 # Override some tcltest procs with additional functionality
 
@@ -42,3 +45,28 @@ proc booleanMatch {expected actual} {
     }]
 }
 customMatch boolean booleanMatch
+
+
+# for testing the test runner, compare the actual results.json to the expected_results.json
+
+proc exercismResultFilesMatch {expected_file actual_file} {
+    set actual [readfile $actual_file]
+    set expected [readfile $expected_file]
+
+    expr {
+        [json get $actual version] == [json get $expected version] &&
+        [json get $actual status] eq [json get $expected status] &&
+        [json get $actual tests] eq [json get $expected tests] &&
+        [json exists $actual "test-environment"] &&
+        [json exists $actual "test-environment" tclsh] &&
+        [string length [json get $actual test-environment tclsh]] > 0
+    }
+}
+customMatch exercismResultFiles exercismResultFilesMatch
+
+proc readfile {filename} {
+    set fh [open $filename]
+    set data [read $fh]
+    close $fh
+    return $data
+}

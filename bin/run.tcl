@@ -156,6 +156,12 @@ proc jsonResult {status {tests {}} {message ""}} {
     set j [json object]
     json set j version [json number $::SPEC_VERSION]
     json set j status  [json string $status]
+
+    json set j "test-environment" [
+        set tools [json object]
+        json set tools tclsh [json string [info patchlevel]]
+    ] 
+
     if {$message eq ""} {
         json set j message null
     } else {
