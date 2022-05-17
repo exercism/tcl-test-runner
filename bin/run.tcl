@@ -70,6 +70,10 @@ proc extraTestVerbosity {slug testsFile} {
     set fhIn [open $testsFile r]
     set fhOut [open $verboseTestsFile w]
     while {[gets $fhIn line] != -1} {
+        if {[regexp {^\s*configure\s+-verbose} $line]} {
+            # ignore user's verbose settings
+            set line "## $line"
+        }
         puts $fhOut $line
         if {[string match "namespace import *tcltest*" $line]} {
             puts $fhOut "configure -verbose {start body error pass}"
@@ -130,8 +134,9 @@ proc getTestBodies {testsFile} {
     $i expose source source
     $i eval {
         rename source tcl_source
-        # turn these into no-op commands
-        foreach cmd {package namespace source skip cleanupTests} {
+        # turn these tcl and tcltest commands into no-ops,
+        # including "unknown" to ignore any unknown commands
+        foreach cmd {package namespace source skip cleanupTests configure unknown} {
             proc $cmd {args} {}
         }
         # don't actually run the test,

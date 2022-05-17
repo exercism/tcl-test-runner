@@ -47,7 +47,10 @@ proc booleanMatch {expected actual} {
 customMatch boolean booleanMatch
 
 
-# for testing the test runner, compare the actual results.json to the expected_results.json
+# For testing the test runner, compare the actual results.json to the expected_results.json
+# Just check that the test-environment object exists with a value, don't check
+# for equality with the expected results: the tclsh version locally and in
+# docker may well be different.
 
 proc exercismResultFilesMatch {expected_file actual_file} {
     set actual [readfile $actual_file]
