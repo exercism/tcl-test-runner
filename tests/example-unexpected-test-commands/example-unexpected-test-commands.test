@@ -12,3 +12,5 @@ a_procedure
 test test1 "a test" -body {
     a_procedure unused arguments
 } -returnCodes ok -result "bang!"
+
+cleanupTests

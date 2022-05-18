@@ -1,0 +1,17 @@
+#!/usr/bin/env tclsh
+package require tcltest
+namespace import ::tcltest::*
+source ../testHelpers.tcl
+
+test test1 "success" -body {
+    puts "some output"
+    set result ok
+} -returnCodes ok -result ok
+
+test test2 "broken" -body {
+    puts "start of broken test"
+    exec kill [pid]
+    puts "end of broken test"
+} -returnCodes ok -result ok
+
+cleanupTests
