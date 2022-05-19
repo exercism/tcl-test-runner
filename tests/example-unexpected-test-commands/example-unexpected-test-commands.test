@@ -1,0 +1,16 @@
+#!/usr/bin/env tclsh
+package require tcltest
+namespace import ::tcltest::*
+source ../testHelpers.tcl
+
+configure -verbose {error msec}
+
+source example-unexpected-test-commands.tcl
+
+a_procedure
+
+test test1 "a test" -body {
+    a_procedure unused arguments
+} -returnCodes ok -result "bang!"
+
+cleanupTests

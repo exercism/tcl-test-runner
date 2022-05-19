@@ -1,0 +1,25 @@
+{
+    "version":          2,
+    "status":           "fail",
+    "test-exit-status": -1,
+    "test-environment": {
+        "tclsh": "8.6.10"
+    },
+    "message":          null,
+    "tests":            [
+        {
+            "name":      "test1",
+            "status":    "pass",
+            "output":    "some output",
+            "message":   null,
+            "test_code": "puts \"some output\"\n    set result ok"
+        },
+        {
+            "name":      "test2",
+            "status":    "fail",
+            "message":   null,
+            "output":    "start of broken test\nchild killed: software termination signal",
+            "test_code": "puts \"start of broken test\"\n    exec kill [pid]\n    puts \"end of broken test\""
+        }
+    ]
+}

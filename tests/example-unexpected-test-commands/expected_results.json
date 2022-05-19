@@ -1,0 +1,17 @@
+{
+    "version":          2,
+    "status":           "pass",
+    "test-environment": {
+        "tclsh": "8.6.10"
+    },
+    "message":          null,
+    "tests":            [
+        {
+            "name":      "test1",
+            "status":    "pass",
+            "output":    null,
+            "message":   null,
+            "test_code": "a_procedure unused arguments"
+        }
+    ]
+}

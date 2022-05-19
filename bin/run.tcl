@@ -70,6 +70,10 @@ proc extraTestVerbosity {slug testsFile} {
     set fhIn [open $testsFile r]
     set fhOut [open $verboseTestsFile w]
     while {[gets $fhIn line] != -1} {
+        if {[regexp {^\s*configure\s+-verbose} $line]} {
+            # ignore user's verbose settings
+            set line "## $line"
+        }
         puts $fhOut $line
         if {[string match "namespace import *tcltest*" $line]} {
             puts $fhOut "configure -verbose {start body error pass}"
@@ -84,6 +88,9 @@ proc extraTestVerbosity {slug testsFile} {
 proc parseTestOutput {testOutput} {
     set tests {}
     set state None
+    set testname ""
+    set errLines {}
+    set outputLines {}
 
     foreach line [split $testOutput \n] {
         if {[regexp -- {^[-]{4} (.+) start$} $line -> testname]} {
@@ -91,11 +98,11 @@ proc parseTestOutput {testOutput} {
             set outputLines {}
 
         } elseif {[regexp -- {^[+]{4} .+ PASSED$} $line]} {
-            set state Passed
             set test [dict create name $testname status pass]
             dict set test output [string trimright [join $outputLines \n]]
             dict set test message ""
             lappend tests $test
+            set state None
 
         } elseif {[regexp -- {^[=]{4} .+ FAILED$} $line]} {
             if {$state eq "InTest"} {
@@ -105,12 +112,12 @@ proc parseTestOutput {testOutput} {
 
             } elseif {$state eq "CollectingErrs"} {
                 # end of test output
-                set state None
                 lappend errLines $line
                 set test [dict create name $testname status fail]
                 dict set test message [join $errLines \n]
                 dict set test output [string trimright [join $outputLines \n]]
                 lappend tests $test
+                set state None
             }
         } else {
             switch -- $state {
@@ -119,6 +126,15 @@ proc parseTestOutput {testOutput} {
             }
         }
     }
+
+    # what if we get to the end of the test output without "closing" the last test
+    if {$state ne "None"} {
+        set test [dict create name $testname status fail]
+        dict set test message [join $errLines \n]
+        dict set test output [string trimright [join $outputLines \n]]
+        lappend tests $test
+    }
+
     return $tests
 }
 
@@ -130,8 +146,9 @@ proc getTestBodies {testsFile} {
     $i expose source source
     $i eval {
         rename source tcl_source
-        # turn these into no-op commands
-        foreach cmd {package namespace source skip cleanupTests} {
+        # turn these tcl and tcltest commands into no-ops,
+        # including "unknown" to ignore any unknown commands
+        foreach cmd {package namespace source skip cleanupTests configure unknown} {
             proc $cmd {args} {}
         }
         # don't actually run the test,
@@ -152,10 +169,11 @@ proc getTestBodies {testsFile} {
 
 ############################################################
 # Compose the JSON result.
-proc jsonResult {status {tests {}} {message ""}} {
+proc jsonResult {status tests {message ""} {exitCode 0}} {
     set j [json object]
     json set j version [json number $::SPEC_VERSION]
     json set j status  [json string $status]
+    json set j "test-exit-status" [json number $exitCode]
 
     json set j "test-environment" [
         set tools [json object]
@@ -232,11 +250,11 @@ proc main {argv} {
 
     set fh [open $results_file w]
     if {$exitCode == 0} {
-        puts $fh [jsonResult pass $tests ""]
+        puts $fh [jsonResult pass $tests]
     } elseif {[llength $tests] > 0} {
-        puts $fh [jsonResult fail $tests ""]
+        puts $fh [jsonResult fail $tests "" $exitCode]
     } else {
-        puts $fh [jsonResult error "" $testOutput]
+        puts $fh [jsonResult error {} $testOutput $exitCode]
     }
     close $fh
 
