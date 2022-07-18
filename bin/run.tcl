@@ -152,9 +152,21 @@ proc getTestBodies {testsFile} {
             proc $cmd {args} {}
         }
         # don't actually run the test,
-        # just map the test name to the test body
+        # just map the test name to the test information
         proc test {name desc args} {
-            dict set ::testCode $name [string trim [dict get $args -body]]
+            try {
+                set match [dict get $args -match]
+            } on error e {
+                set match "exact"
+            }
+            set testInfo "# code:\n[string trim [dict get $args -body] \n]"
+            append testInfo "\n# using $match matching"
+            append testInfo "\n# expected value: [dict get $args -result]"
+            if {[dict get $args -returnCodes] ne "ok"} {
+                append testInfo "\n# expected status: [dict get $args -returnCodes]"
+            }
+
+            dict set ::testCode $name $testInfo
         }
         set ::testCode {}
     }
