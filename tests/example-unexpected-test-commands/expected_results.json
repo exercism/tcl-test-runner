@@ -1,8 +1,9 @@
 {
     "version":          2,
     "status":           "pass",
+    "test-exit-status": 0,
     "test-environment": {
-        "tclsh": "8.6.10"
+        "tclsh": "8.6.12"
     },
     "message":          null,
     "tests":            [
@@ -11,7 +12,7 @@
             "status":    "pass",
             "output":    null,
             "message":   null,
-            "test_code": "a_procedure unused arguments"
+            "test_code": "# code:\n    a_procedure unused arguments\n# using exact matching\n# expected value: bang!"
         }
     ]
 }

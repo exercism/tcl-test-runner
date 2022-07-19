@@ -1,70 +1,74 @@
 {
-    "version": 2,
-    "status":  "fail",
-    "message": null,
-    "tests":   [
+    "version":          2,
+    "status":           "fail",
+    "test-exit-status": 1,
+    "test-environment": {
+        "tclsh": "8.6.12"
+    },
+    "message":          null,
+    "tests":            [
         {
             "name":      "leap-1",
             "status":    "pass",
             "output":    null,
             "message":   null,
-            "test_code": "isLeapYear 2015"
+            "test_code": "# code:\n    isLeapYear 2015\n# using boolean matching\n# expected value: false"
         },
         {
             "name":      "leap-2",
             "status":    "pass",
             "output":    null,
             "message":   null,
-            "test_code": "isLeapYear 1970"
+            "test_code": "# code:\n    isLeapYear 1970\n# using boolean matching\n# expected value: false"
         },
         {
             "name":      "leap-3",
             "status":    "pass",
             "output":    null,
             "message":   null,
-            "test_code": "isLeapYear 1996"
+            "test_code": "# code:\n    isLeapYear 1996\n# using boolean matching\n# expected value: true"
         },
         {
             "name":      "leap-4",
             "status":    "pass",
             "output":    null,
             "message":   null,
-            "test_code": "isLeapYear 1960"
+            "test_code": "# code:\n    isLeapYear 1960\n# using boolean matching\n# expected value: true"
         },
         {
             "name":      "leap-5",
             "status":    "pass",
             "output":    null,
             "message":   null,
-            "test_code": "isLeapYear 2100"
+            "test_code": "# code:\n    isLeapYear 2100\n# using boolean matching\n# expected value: false"
         },
         {
             "name":      "leap-6",
             "status":    "pass",
             "output":    null,
             "message":   null,
-            "test_code": "isLeapYear 1900"
+            "test_code": "# code:\n    isLeapYear 1900\n# using boolean matching\n# expected value: false"
         },
         {
             "name":      "leap-7",
             "status":    "fail",
             "message":   "==== leap-7 year divisible by 400 in leap year FAILED\n==== Contents of test case:\n\n    isLeapYear 2000\n\n---- Result was:\n0\n---- Result should have been (boolean matching):\ntrue\n==== leap-7 FAILED",
             "output":    null,
-            "test_code": "isLeapYear 2000"
+            "test_code": "# code:\n    isLeapYear 2000\n# using boolean matching\n# expected value: true"
         },
         {
             "name":      "leap-8",
             "status":    "fail",
             "message":   "==== leap-8 year divisible by 400 but not by 125 is still a leap year FAILED\n==== Contents of test case:\n\n    isLeapYear 2400\n\n---- Result was:\n0\n---- Result should have been (boolean matching):\ntrue\n==== leap-8 FAILED",
             "output":    null,
-            "test_code": "isLeapYear 2400"
+            "test_code": "# code:\n    isLeapYear 2400\n# using boolean matching\n# expected value: true"
         },
         {
             "name":      "leap-9",
             "status":    "pass",
             "output":    null,
             "message":   null,
-            "test_code": "isLeapYear 1800"
+            "test_code": "# code:\n    isLeapYear 1800\n# using boolean matching\n# expected value: false"
         }
     ]
 }
