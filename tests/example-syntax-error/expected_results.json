@@ -1,10 +1,10 @@
 {
-    "version":          2,
-    "status":           "error",
-    "test-exit-status": 1,
-    "test-environment": {
-        "tclsh": "8.6.12"
+    "version" : 2,
+    "status" : "error",
+    "test-exit-status" : 1,
+    "test-environment" : {
+        "tclsh" : "9.0.1"
     },
-    "message":          "invalid command name \"PROCCIEE\"\n    while executing\n\"PROCCIEE isLeapYear {year} @#$&\"\n    (file \"example-syntax-error.tcl\" line 3)\n    invoked from within\n\"source \"example-syntax-error.tcl\"\"\n    (file \"example-syntax-error.test.verbose\" line 7)\nchild process exited abnormally",
-    "tests":            null
+    "message" : "invalid command name \"PROCCIEE\"\n    while executing\n\"PROCCIEE isLeapYear {year} @#$&\"\n    (file \"example-syntax-error.tcl\" line 3)\n    invoked from within\n\"source \"example-syntax-error.tcl\"\"\n    (file \"example-syntax-error.test.verbose\" line 7)\nchild process exited abnormally",
+    "tests" : null
 }

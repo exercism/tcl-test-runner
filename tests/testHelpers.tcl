@@ -1,5 +1,4 @@
-package require rl_json
-namespace import ::rl_json::json
+package require json
 
 #############################################################
 # Override some tcltest procs with additional functionality
@@ -53,16 +52,16 @@ customMatch boolean booleanMatch
 # docker may well be different.
 
 proc exercismResultFilesMatch {expected_file actual_file} {
-    set actual [readfile $actual_file]
-    set expected [readfile $expected_file]
+    set actual   [::json::json2dict [readfile $actual_file]]
+    set expected [::json::json2dict [readfile $expected_file]]
 
     expr {
-        [json get $actual version] == [json get $expected version] &&
-        [json get $actual status] eq [json get $expected status] &&
-        [json get $actual tests] eq [json get $expected tests] &&
-        [json exists $actual "test-environment"] &&
-        [json exists $actual "test-environment" tclsh] &&
-        [string length [json get $actual test-environment tclsh]] > 0
+        [dict get $actual version] == [dict get $expected version] &&
+        [dict get $actual status] eq [dict get $expected status] &&
+        [dict get $actual tests] eq [dict get $expected tests] &&
+        [dict exists $actual "test-environment"] &&
+        [dict exists $actual "test-environment" tclsh] &&
+        [string length [dict get $actual test-environment tclsh]] > 0
     }
 }
 customMatch exercismResultFiles exercismResultFilesMatch
