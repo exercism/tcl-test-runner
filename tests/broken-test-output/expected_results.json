@@ -1,25 +1,22 @@
 {
-    "version":          2,
-    "status":           "fail",
-    "test-exit-status": -1,
-    "test-environment": {
-        "tclsh": "8.6.12"
+    "version" : 2,
+    "status" : "fail",
+    "test-exit-status" : -1,
+    "test-environment" : {
+        "tclsh" : "9.0.1"
     },
-    "message":          null,
-    "tests":            [
-        {
-            "name":      "test1",
-            "status":    "pass",
-            "output":    "some output",
-            "message":   null,
-            "test_code": "# code:\n    puts \"some output\"\n    set result ok\n# using exact matching\n# expected value: ok"
-        },
-        {
-            "name":      "test2",
-            "status":    "fail",
-            "message":   null,
-            "output":    "start of broken test\nchild killed: software termination signal",
-            "test_code": "# code:\n    puts \"start of broken test\"\n    exec kill [pid]\n    puts \"end of broken test\"\n# using exact matching\n# expected value: ok"
-        }
-    ]
+    "message" : null,
+    "tests" : [{
+        "name" : "test1",
+        "status" : "pass",
+        "output" : "some output",
+        "message" : null,
+        "test_code" : "# code:\n    puts \"some output\"\n    set result ok\n# using exact matching\n# expected value: ok"
+    },{
+        "name" : "test2",
+        "status" : "fail",
+        "message" : null,
+        "output" : "start of broken test\nchild killed: software termination signal",
+        "test_code" : "# code:\n    puts \"start of broken test\"\n    exec kill [pid]\n    puts \"end of broken test\"\n# using exact matching\n# expected value: ok"
+    }]
 }

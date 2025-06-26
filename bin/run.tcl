@@ -17,8 +17,14 @@
 
 set SPEC_VERSION 2
 
-package require rl_json
-namespace import rl_json::json
+package require json::write
+
+::json::write indented yes
+::json::write aligned no
+
+interp alias {} jString {} ::json::write string
+interp alias {} jArray  {} ::json::write array
+interp alias {} jObject {} ::json::write object
 
 proc usage {} {
     puts [format "usage: %s %s exercise-slug /absolute/path/to/two-fer/solution/folder/ /absolute/path/to/output/directory/" \
@@ -182,45 +188,41 @@ proc getTestBodies {testsFile} {
 ############################################################
 # Compose the JSON result.
 proc jsonResult {status tests {message ""} {exitCode 0}} {
-    set j [json object]
-    json set j version [json number $::SPEC_VERSION]
-    json set j status  [json string $status]
-    json set j "test-exit-status" [json number $exitCode]
-
-    json set j "test-environment" [
-        set tools [json object]
-        json set tools tclsh [json string [info patchlevel]]
-    ] 
+    set kv_pairs [list]
+    lappend kv_pairs version $::SPEC_VERSION
+    lappend kv_pairs status  [jString $status]
+    lappend kv_pairs "test-exit-status" $exitCode
+    lappend kv_pairs "test-environment" [jObject tclsh [jString [info patchlevel]]]
 
     if {$message eq ""} {
-        json set j message null
+        lappend kv_pairs message null
     } else {
-        json set j message [json string $message]
+        lappend kv_pairs message [jString $message]
     }
     if {[llength $tests] == 0} {
-        json set j tests null
+        lappend kv_pairs tests null
     } else {
         set count {pass 0 fail 0 error 0}
-        set testsAsJson [json array {*}[lmap tst $tests {
+        set testsAsJson [jArray {*}[lmap tst $tests {
             dict incr count [dict get $tst status]
-            list json [jsonTestResult $tst]
+            jsonTestResult $tst
         }]]
         puts "Ran [llength $tests] tests: $count"
-        json set j tests $testsAsJson
+        lappend kv_pairs tests $testsAsJson
     }
-    return [json pretty $j]
+    return [jObject {*}$kv_pairs]
 }
 
 proc jsonTestResult {tst} {
-    set j [json object]
+    set kv_pairs [list]
     dict for {key val} $tst {
         if {$val eq ""} {
-            json set j $key null
+            lappend kv_pairs $key null
         } else {
-            json set j $key [json string $val]
+            lappend kv_pairs $key [jString $val]
         }
     }
-    return $j
+    return [jObject {*}$kv_pairs]
 }
 
 ############################################################

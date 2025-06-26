@@ -1,18 +1,16 @@
 {
-    "version":          2,
-    "status":           "pass",
-    "test-exit-status": 0,
-    "test-environment": {
-        "tclsh": "8.6.12"
+    "version" : 2,
+    "status" : "pass",
+    "test-exit-status" : 0,
+    "test-environment" : {
+        "tclsh" : "9.0.1"
     },
-    "message":          null,
-    "tests":            [
-        {
-            "name":      "test1",
-            "status":    "pass",
-            "output":    null,
-            "message":   null,
-            "test_code": "# code:\n    a_procedure unused arguments\n# using exact matching\n# expected value: bang!"
-        }
-    ]
+    "message" : null,
+    "tests" : [{
+        "name" : "test1",
+        "status" : "pass",
+        "output" : null,
+        "message" : null,
+        "test_code" : "# code:\n    a_procedure unused arguments\n# using exact matching\n# expected value: bang!"
+    }]
 }

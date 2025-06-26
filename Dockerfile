@@ -1,11 +1,40 @@
 # https://hub.docker.com/r/cyanogilvie/tcl
 # includes, among other packages:
-#   tcl         8.7a4   http://tcl.tk/software/tcltk/8.7.html 
-#   Thread      2.8.6   https://core.tcl-lang.org/thread/dir?ci=tip 
-#   tcllib      1.20    https://core.tcl-lang.org/tcllib/doc/tcllib-1-20/embedded/md/toc.md 
-#   rl_json     0.11.0  https://github.com/RubyLane/rl_json
-#   parse_args  0.3.1   https://github.com/RubyLane/parse_args 
-FROM cyanogilvie/tcl:8.7pre3
+#   tcl         9.0.1   http://tcl.tk/software/tcltk/9.0.html 
+#   Thread      3.0.1   https://www.tcl-lang.org/man/tcl9.0/ThreadCmd/index.html
+#   incrTcl     4.3.2   https://www.tcl-lang.org/man/tcl9.0/ItclCmd/index.html
+#   tcllib      2.0     https://core.tcl-lang.org/tcllib/technote/4a474d8ae3608f1f13ef77049f334be397a18485
+
+
+FROM alpine:latest
+
+WORKDIR /usr/src
+RUN apk update \
+    && apk add --no-cache --virtual .build-deps \
+        build-base \
+        bsd-compat-headers \
+        openssl-dev \
+        zlib-dev \
+        tar \
+        wget \
+    && wget https://prdownloads.sourceforge.net/tcl/tcl9.0.1-src.tar.gz \
+    && tar -xzf tcl9.0.1-src.tar.gz \
+    && cd ./tcl9.0.1/unix \
+    && ./configure --enable-threads --prefix=/usr/local \
+    && make \
+    && make install \
+    && ln /usr/local/bin/tclsh9.0 /usr/local/bin/tclsh \
+    && cd /usr/src \
+    && wget https://prdownloads.sourceforge.net/tcllib/tcllib-2.0.tar.gz \
+    && tar -xzf tcllib-2.0.tar.gz \
+    && cd ./tcllib-2.0 \
+    && ./configure --prefix=/usr/local \
+    && make \
+    && make install \
+    && cd /usr/src \
+    && rm -r ./tcl9.0.1* ./tcllib* \
+    && apk del .build-deps
+
 COPY . /opt/test-runner
 WORKDIR /opt/test-runner
 ENV RUN_ALL=true
