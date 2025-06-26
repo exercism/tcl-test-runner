@@ -8,6 +8,7 @@
 
 FROM alpine:latest
 
+WORKDIR /usr/src
 RUN apk update \
     && apk add --no-cache --virtual .build-deps \
         build-base \
@@ -15,25 +16,23 @@ RUN apk update \
         openssl-dev \
         zlib-dev \
         tar \
-    && mkdir -p /usr/src \
-    && cd /usr/src \
+        wget \
     && wget https://prdownloads.sourceforge.net/tcl/tcl9.0.1-src.tar.gz \
-    && tar -xzvf tcl9.0.1-src.tar.gz \
+    && tar -xzf tcl9.0.1-src.tar.gz \
     && cd ./tcl9.0.1/unix \
     && ./configure --enable-threads --prefix=/usr/local \
     && make \
     && make install \
-    && cd /usr/local/bin \
-    && ln tclsh9.0 tclsh \
+    && ln /usr/local/bin/tclsh9.0 /usr/local/bin/tclsh \
     && cd /usr/src \
     && wget https://prdownloads.sourceforge.net/tcllib/tcllib-2.0.tar.gz \
-    && tar -xzvf tcllib-2.0.tar.gz \
+    && tar -xzf tcllib-2.0.tar.gz \
     && cd ./tcllib-2.0 \
     && ./configure --prefix=/usr/local \
     && make \
     && make install \
     && cd /usr/src \
-    && rm -r tcl9.0.1* tcllib* \
+    && rm -r ./tcl9.0.1* ./tcllib* \
     && apk del .build-deps
 
 COPY . /opt/test-runner
