@@ -9,8 +9,7 @@
 FROM alpine:latest
 
 WORKDIR /usr/src
-RUN apk update \
-    && apk add --no-cache --virtual .build-deps \
+RUN apk add --no-cache --virtual .build-deps \
         build-base \
         bsd-compat-headers \
         openssl-dev \
