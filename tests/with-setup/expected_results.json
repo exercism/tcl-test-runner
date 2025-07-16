@@ -1,0 +1,28 @@
+{
+    "version" : 2,
+    "status" : "pass",
+    "test-exit-status" : 0,
+    "test-environment" : {
+        "tclsh" : "9.0.2"
+    },
+    "message" : null,
+    "tests" : [{
+        "name" : "leap-1",
+        "status" : "pass",
+        "output" : null,
+        "message" : null,
+        "test_code" : "# code:\n    isLeapYear 2015\n# using boolean matching\n# expected value: false"
+    },{
+        "name" : "leap-2",
+        "status" : "pass",
+        "output" : null,
+        "message" : null,
+        "test_code" : "# code:\n    set year 2015\n\n    isLeapYear $year\n# using boolean matching\n# expected value: false"
+    },{
+        "name" : "leap-3",
+        "status" : "pass",
+        "output" : null,
+        "message" : null,
+        "test_code" : "# code:\n    set year 2016\n\n    isLeapYear $year\n# using boolean matching\n# expected value: true"
+    }]
+}

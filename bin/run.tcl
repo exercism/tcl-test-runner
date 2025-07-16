@@ -17,6 +17,7 @@
 
 set SPEC_VERSION 2
 
+package require Tcl 9.0
 package require json::write
 
 ::json::write indented yes
@@ -160,16 +161,14 @@ proc getTestBodies {testsFile} {
         # don't actually run the test,
         # just map the test name to the test information
         proc test {name desc args} {
-            try {
-                set match [dict get $args -match]
-            } on error e {
-                set match "exact"
-            }
-            set testInfo "# code:\n[string trim [dict get $args -body] \n]"
-            append testInfo "\n# using $match matching"
+            set code [string cat [dict getdef $args -setup ""] [dict get $args -body]]
+            set rc [dict getdef $args -returnCodes "ok"]
+
+            set testInfo "# code:\n[string trim $code \n]"
+            append testInfo "\n# using [dict getdef $args -match "exact"] matching"
             append testInfo "\n# expected value: [dict get $args -result]"
-            if {[dict get $args -returnCodes] ne "ok"} {
-                append testInfo "\n# expected status: [dict get $args -returnCodes]"
+            if {$rc ne "ok"} {
+                append testInfo "\n# expected status: $rc"
             }
 
             dict set ::testCode $name $testInfo

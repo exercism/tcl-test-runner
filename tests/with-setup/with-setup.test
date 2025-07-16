@@ -1,0 +1,26 @@
+#!/usr/bin/env tclsh
+package require tcltest
+namespace import ::tcltest::*
+source ../testHelpers.tcl
+
+source "with-setup.tcl"
+
+# no setup block
+test leap-1 "A year not divisible by 4 in common year" -body {
+    isLeapYear 2015
+} -returnCodes ok -match boolean -result false
+
+# with setup blocks
+test leap-2 "B year not divisible by 4 in common year" -setup {
+    set year 2015
+} -body {
+    isLeapYear $year
+} -returnCodes ok -match boolean -result false
+
+test leap-3 "year divisible by 4 in common year" -setup {
+    set year 2016
+} -body {
+    isLeapYear $year
+} -returnCodes ok -match boolean -result true
+
+cleanupTests
