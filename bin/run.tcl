@@ -165,7 +165,9 @@ proc getTestBodies {testsFile} {
             } on error e {
                 set match "exact"
             }
-            set testInfo "# code:\n[string trim [dict get $args -body] \n]"
+            set code [string cat [dict getdef $args -setup ""] \
+                                 [dict get    $args -body]]
+            set testInfo "# code:\n[string trim $code \n]"
             append testInfo "\n# using $match matching"
             append testInfo "\n# expected value: [dict get $args -result]"
             if {[dict get $args -returnCodes] ne "ok"} {
