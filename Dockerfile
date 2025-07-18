@@ -5,6 +5,7 @@
 #   incrTcl     4.3.2   https://www.tcl-lang.org/man/tcl9.0/ItclCmd/index.html
 #   tcllib      2.0     https://core.tcl-lang.org/tcllib/technote/4a474d8ae3608f1f13ef77049f334be397a18485
 
+# Adding jq package so Tcl track can do CI with the test runner.
 
 FROM alpine:latest
 
@@ -16,6 +17,7 @@ RUN apk add --no-cache --virtual .build-deps \
         zlib-dev \
         tar \
         wget \
+        jq \
     && wget https://prdownloads.sourceforge.net/tcl/tcl9.0.1-src.tar.gz \
     && tar -xzf tcl9.0.1-src.tar.gz \
     && cd ./tcl9.0.1/unix \
