@@ -7,7 +7,7 @@
 
 # Adding jq package so Tcl track can do CI with the test runner.
 
-FROM alpine:latest
+FROM alpine:3.24.2@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6
 
 WORKDIR /usr/src
 RUN apk add --no-cache --virtual .build-deps \
