@@ -1,13 +1,7 @@
-# https://hub.docker.com/r/cyanogilvie/tcl
-# includes, among other packages:
-#   tcl         9.0.1   http://tcl.tk/software/tcltk/9.0.html 
-#   Thread      3.0.1   https://www.tcl-lang.org/man/tcl9.0/ThreadCmd/index.html
-#   incrTcl     4.3.2   https://www.tcl-lang.org/man/tcl9.0/ItclCmd/index.html
-#   tcllib      2.0     https://core.tcl-lang.org/tcllib/technote/4a474d8ae3608f1f13ef77049f334be397a18485
-
-# Adding jq package so Tcl track can do CI with the test runner.
-
 FROM alpine:3.24.2@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6
+
+ARG TCL_VERSION=9.1
+ARG TCL_PATCH_VERSION=9.1.0
 
 WORKDIR /usr/src
 RUN apk add --no-cache --virtual .build-deps \
@@ -18,13 +12,13 @@ RUN apk add --no-cache --virtual .build-deps \
         tar \
         wget \
         jq \
-    && wget https://prdownloads.sourceforge.net/tcl/tcl9.0.1-src.tar.gz \
-    && tar -xzf tcl9.0.1-src.tar.gz \
-    && cd ./tcl9.0.1/unix \
+    && wget https://prdownloads.sourceforge.net/tcl/tcl${TCL_PATCH_VERSION}-src.tar.gz \
+    && tar -xzf tcl${TCL_PATCH_VERSION}-src.tar.gz \
+    && cd ./tcl${TCL_PATCH_VERSION}/unix \
     && ./configure --enable-threads --prefix=/usr/local \
     && make \
     && make install \
-    && ln /usr/local/bin/tclsh9.0 /usr/local/bin/tclsh \
+    && ln /usr/local/bin/tclsh${TCL_VERSION} /usr/local/bin/tclsh \
     && cd /usr/src \
     && wget https://prdownloads.sourceforge.net/tcllib/tcllib-2.0.tar.gz \
     && tar -xzf tcllib-2.0.tar.gz \
@@ -33,7 +27,7 @@ RUN apk add --no-cache --virtual .build-deps \
     && make \
     && make install \
     && cd /usr/src \
-    && rm -r ./tcl9.0.1* ./tcllib* \
+    && rm -r ./tcl${TCL_PATCH_VERSION}* ./tcllib* \
     && apk del .build-deps
 
 COPY . /opt/test-runner
